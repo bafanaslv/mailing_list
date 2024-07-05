@@ -19,15 +19,13 @@ class Client(models.Model):
 
 class Message(models.Model):
     title = models.CharField(max_length=150, verbose_name='заголовок')
-    body = models.TextField(
-        verbose_name='сообщение'
-    )
+    body = models.TextField(verbose_name='сообщение')
     created_at = models.DateTimeField(auto_now_add=True, verbose_name='создано')
 
     def __str__(self):
         return f'{self.title}'
 
-    class Metta:
+    class Meta:
         verbose_name = 'сообщение'
         verbose_name_plural = 'сообщения'
 
@@ -65,9 +63,13 @@ class Mailing(models.Model):
 
 
 class MailingList(models.Model):
-    mailing = models.ManyToManyField(Mailing, related_name='mailings', verbose_name='рассылка')
-    client = models.ManyToManyField(Client, related_name='clients', verbose_name='клиент')
+    mailing = models.ForeignKey(Mailing, related_name='mailings', on_delete=models.CASCADE, verbose_name='рассылка')
+    client = models.ForeignKey(Client, related_name='clients', on_delete=models.CASCADE, verbose_name='клиент')
     message = models.ForeignKey(Message, related_name='messages', on_delete=models.CASCADE, verbose_name='сообщение')
+
+    class Meta:
+        verbose_name = 'Список рассылки'
+        verbose_name_plural = 'Список рассылки'
 
 
 class MailingAttempt(models.Model):
