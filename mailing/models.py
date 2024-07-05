@@ -67,8 +67,7 @@ class Mailing(models.Model):
 class MailingList(models.Model):
     mailing = models.ManyToManyField(Mailing, related_name='mailings', verbose_name='рассылка')
     client = models.ManyToManyField(Client, related_name='clients', verbose_name='клиент')
-    message = models.ForeignKey(Message, related_name='messages', on_delete=models.CASCADE,
-                                primary_key=True, verbose_name='сообщение')
+    message = models.ForeignKey(Message, related_name='messages', on_delete=models.CASCADE, verbose_name='сообщение')
 
 
 class MailingAttempt(models.Model):
