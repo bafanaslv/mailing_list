@@ -6,4 +6,3 @@ from django.urls import reverse_lazy, reverse
 
 class MailingListView(ListView):
     model = MailingList
-    template_name = 'mailing_list.html'
