@@ -1,5 +1,5 @@
 from django.contrib import admin
-from mailing.models import Message, Client, Mailing, MailingList, MailingAttempt
+from mailing.models import Message, Client, MailingList, MailingAttempt, Settings
 
 
 @admin.register(Client)
@@ -12,14 +12,14 @@ class MessageAdmin(admin.ModelAdmin):
     list_display = ("id", "title", "body", "created_at")
 
 
-@admin.register(Mailing)
-class MailingAdmin(admin.ModelAdmin):
-    list_display = ("id", "first_time", "periodicity", "status")
+@admin.register(Settings)
+class SettingAdmin(admin.ModelAdmin):
+    list_display = ("id", "begin_time", "end_time", "periodicity")
 
 
 @admin.register(MailingList)
 class MailingListAdmin(admin.ModelAdmin):
-    list_display = ("id", "mailing", "client", "message")
+    list_display = ("id", "message", "setting", "client", "status")
 
 
 @admin.register(MailingAttempt)
