@@ -13,8 +13,8 @@ class Client(models.Model):
         return f'{self.email} - {self.name}'
 
     class Meta:
-        verbose_name = 'адрес рассылки'
-        verbose_name_plural = 'адреса рассылки'
+        verbose_name = 'клиен'
+        verbose_name_plural = 'клиенты'
 
 
 class Message(models.Model):
@@ -30,7 +30,7 @@ class Message(models.Model):
         verbose_name_plural = 'сообщения'
 
 
-class Mailing(models.Model):
+class MailingSettings(models.Model):
     PERIODICITY = [("daily", "ежедневно"),
                    ("weekly", "еженедельно"),
                    ("monthly", "ежемесячно")]
@@ -58,25 +58,25 @@ class Mailing(models.Model):
 
     class Meta:
         ordering = ['-first_time']
-        verbose_name = 'рассылка'
-        verbose_name_plural = 'рассылки'
+        verbose_name = 'настройка рассылки'
+        verbose_name_plural = 'настройки рассылки'
 
 
 class MailingList(models.Model):
-    mailing = models.ForeignKey(Mailing, related_name='mailings', on_delete=models.CASCADE, verbose_name='рассылка')
+    mailing = models.ForeignKey(MailingSettings, related_name='mailing_settings', on_delete=models.CASCADE, verbose_name='настройка')
     client = models.ForeignKey(Client, related_name='clients', on_delete=models.CASCADE, verbose_name='клиент')
     message = models.ForeignKey(Message, related_name='messages', on_delete=models.CASCADE, verbose_name='сообщение')
 
     class Meta:
-        verbose_name = 'Список рассылки'
-        verbose_name_plural = 'Список рассылки'
+        verbose_name = 'рассылка'
+        verbose_name_plural = 'рассылки'
 
 
 class MailingAttempt(models.Model):
     STATUS = [('success', 'успешно'),
               ('failed', 'неудачно')]
 
-    mailing = models.ForeignKey(Mailing, related_name='attempts', on_delete=models.CASCADE, verbose_name='рассылка')
+    mailing = models.ForeignKey(MailingList, related_name='attempts', on_delete=models.CASCADE, verbose_name='рассылка')
     last_time = models.DateTimeField(auto_now_add=True, verbose_name='дата и время последней попытки')
     status = models.CharField(max_length=10, choices=STATUS, default='failed', verbose_name='статус попытки')
     response = models.TextField(**NULLABLE, verbose_name='ответ сервера')
