@@ -1,3 +1,9 @@
 from django.shortcuts import render
+from mailing.models import Client, MailingAttempt, MailingList, Message
+from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView, View
+from django.urls import reverse_lazy, reverse
 
-# Create your views here.
+
+class MailingListView(ListView):
+    model = MailingList
+    template_name = 'mailing_list.html'
