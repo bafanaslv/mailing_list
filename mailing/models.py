@@ -51,7 +51,7 @@ class MailingList(models.Model):
               ("completed", "завершена")]
 
     message = models.ForeignKey(Message, related_name='messages', on_delete=models.CASCADE, verbose_name='сообщение')
-    setting = models.ForeignKey(Settings, related_name='settings', on_delete=models.CASCADE, verbose_name='настройка')
+    setting = models.ForeignKey(Settings, related_name='settings', on_delete=models.CASCADE, verbose_name='настройка', default=1)
     client = models.ForeignKey(Client, related_name='clients', on_delete=models.CASCADE, verbose_name='клиент')
     status = models.CharField(max_length=10, choices=STATUS, default='created', verbose_name='статус')
 

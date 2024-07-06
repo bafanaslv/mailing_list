@@ -1,5 +1,5 @@
 from django.contrib import admin
-from mailing.models import Message, Client, MailingList, MailingAttempt, Settings
+from mailing.models import Message, MailingList, MailingAttempt, Settings, Client
 
 
 @admin.register(Client)
