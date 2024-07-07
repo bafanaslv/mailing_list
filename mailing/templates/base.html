@@ -155,7 +155,6 @@
       </ul>
     </div>
 <header>
-<!--{% include 'includes/menu.html' %}-->
 </header>
 <main>
 
@@ -168,14 +167,14 @@
 </div>
 </section>
 
-<!--{% block content %}-->
-<!--{% endblock %}-->
+{% block content %}
+{% endblock %}
 </main>
 
     <footer class="text-body-secondary py-5">
       <div class="container">
         <p class="float-end mb-1">
-          <a href="{% url 'catalog:products_list' %}">Главная</a>
+          <a href="{% url 'mailing:list' %}">Главная</a>
         </p>
         <p class="mb-1">Будьте в курсе скидок на электронику. Смартфоны на любой вкус и на любой карман!</p>
       </div>

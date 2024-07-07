@@ -30,29 +30,20 @@ class Message(models.Model):
         verbose_name_plural = 'сообщения'
 
 
-class Settings(models.Model):
-    PERIODICITY = [("daily", "ежедневно"),
-                   ("weekly", "еженедельно"),
-                   ("monthly", "ежемесячно")]
-
-    begin_time = models.DateTimeField(verbose_name='дата и время первой отправки рассылки')
-    end_time = models.DateTimeField(verbose_name='дата и время окончания отправки рассылок')
-    periodicity = models.CharField(max_length=10, choices=PERIODICITY, default='daily', verbose_name='периодичность')
-
-    class Meta:
-        ordering = ['-begin_time']
-        verbose_name = 'настройка'
-        verbose_name_plural = 'настройки'
-
-
-class MailingList(models.Model):
+class Mailing(models.Model):
     STATUS = [("created", "создана"),
               ("started", "запущена"),
               ("completed", "завершена")]
 
+    PERIODICITY = [("daily", "ежедневно"),
+                   ("weekly", "еженедельно"),
+                   ("monthly", "ежемесячно")]
+
     message = models.ForeignKey(Message, related_name='messages', on_delete=models.CASCADE, verbose_name='сообщение')
-    setting = models.ForeignKey(Settings, related_name='settings', on_delete=models.CASCADE, verbose_name='настройка', default=1)
     client = models.ForeignKey(Client, related_name='clients', on_delete=models.CASCADE, verbose_name='клиент')
+    begin_time = models.DateTimeField(verbose_name='дата и время первой отправки рассылки')
+    end_time = models.DateTimeField(verbose_name='дата и время окончания отправки рассылок')
+    periodicity = models.CharField(max_length=10, choices=PERIODICITY, default='daily', verbose_name='периодичность')
     status = models.CharField(max_length=10, choices=STATUS, default='created', verbose_name='статус')
 
     def str(self):
@@ -77,7 +68,7 @@ class MailingAttempt(models.Model):
     STATUS = [('success', 'успешно'),
               ('failed', 'неудачно')]
 
-    mailing = models.ForeignKey(MailingList, related_name='attempts', on_delete=models.CASCADE, verbose_name='рассылка')
+    mailing = models.ForeignKey(Mailing, related_name='attempts', on_delete=models.CASCADE, verbose_name='рассылка')
     last_time = models.DateTimeField(auto_now_add=True, verbose_name='дата и время последней попытки')
     status = models.CharField(max_length=10, choices=STATUS, default='failed', verbose_name='статус попытки')
     response = models.TextField(**NULLABLE, verbose_name='ответ сервера')
