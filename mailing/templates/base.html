@@ -161,11 +161,19 @@
 <section class="py-1 text-center container">
 <div class="row py-lg-4">
   <div class="col-lg-6 col-md-8 mx-auto">
-    <h1 class="fw-light">Каталог смартфонов</h1>
-    <p class="lead text-body-secondary">Смартфоны на любой вкус и на любой карман.</p>
+    <h1 class="fw-light">Сервис рассылок</h1>
+      <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+        Выберите раздел
+      </button>
+      <ul class="dropdown-menu">
+        <li><a class="dropdown-item" href="{% url 'mailing:list' %}">Рассылки</a></li>
+        <li><a class="dropdown-item" href="#">Клиенты</a></li>
+        <li><a class="dropdown-item" href="#">Сообщения</a></li>
+      </ul>
   </div>
 </div>
 </section>
+
 
 {% block content %}
 {% endblock %}
@@ -176,7 +184,7 @@
         <p class="float-end mb-1">
           <a href="{% url 'mailing:list' %}">Главная</a>
         </p>
-        <p class="mb-1">Будьте в курсе скидок на электронику. Смартфоны на любой вкус и на любой карман!</p>
+        <p class="mb-1">Сервис управления рассылками в ручном и автоматическом режиме.</p>
       </div>
     </footer>
     <script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>

@@ -43,7 +43,7 @@ class Mailing(models.Model):
     client = models.ForeignKey(Client, related_name='clients', on_delete=models.CASCADE, verbose_name='клиент')
     begin_time = models.DateTimeField(verbose_name='дата и время первой отправки рассылки')
     end_time = models.DateTimeField(verbose_name='дата и время окончания отправки рассылок')
-    periodicity = models.CharField(max_length=10, choices=PERIODICITY, default='daily', verbose_name='периодичность')
+    periodicity = models.CharField(max_length=10, choices=PERIODICITY, default='ежедневно', verbose_name='периодичность')
     status = models.CharField(max_length=10, choices=STATUS, default='created', verbose_name='статус')
 
     def str(self):
