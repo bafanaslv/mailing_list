@@ -1,5 +1,3 @@
-from django.shortcuts import render
-from django.template.defaultfilters import slugify
 from mailing.models import Client, MailingAttempt, Mailing, Message
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 from django.urls import reverse_lazy, reverse
@@ -25,9 +23,6 @@ class MailingUpdateView(UpdateView):
     model = Mailing
     fields = ("message", "client", "begin_time", "end_time", "end_time", "periodicity", "status")
     success_url = reverse_lazy("mailing:list")
-
-    def get_success_url(self):
-        return reverse("mailing:detail", args=[self.kwargs.get("pk")])
 
     def form_valid(self, form):
         if form.is_valid():
