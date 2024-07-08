@@ -167,8 +167,8 @@
       </button>
       <ul class="dropdown-menu">
         <li><a class="dropdown-item" href="{% url 'mailing:list' %}">Рассылки</a></li>
-        <li><a class="dropdown-item" href="#">Клиенты</a></li>
-        <li><a class="dropdown-item" href="#">Сообщения</a></li>
+        <li><a class="dropdown-item" href="{% url 'mailing:client_list' %}">Клиенты</a></li>
+        <li><a class="dropdown-item" href="{% url 'mailing:message_list' %}">Сообщения</a></li>
       </ul>
   </div>
 </div>

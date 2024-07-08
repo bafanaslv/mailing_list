@@ -5,7 +5,7 @@
         <div class="col-6">
             <form class="row" method="post" enctype="multipart/form-data">
                 <div class="card">
-                    <p class="card-text">Действительно ли вы хотите удалить {{ object.name }} ?</p>
+                    <p class="card-text">Действительно ли вы хотите удалить сообщение {{ object.title }} ?</p>
                     <div class="card-body">
                         {% csrf_token %}
                     </div>
