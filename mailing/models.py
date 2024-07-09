@@ -40,7 +40,7 @@ class Mailing(models.Model):
                    ("monthly", "ежемесячно")]
 
     message = models.ForeignKey(Message, related_name='messages', on_delete=models.CASCADE, verbose_name='сообщение')
-    client = models.ForeignKey(Client, related_name='clients', on_delete=models.CASCADE, verbose_name='адресат')
+    client = models.ManyToManyField(Client, verbose_name='адресат')
     begin_time = models.DateTimeField(verbose_name='дата и время первой отправки рассылки')
     end_time = models.DateTimeField(verbose_name='дата и время окончания отправки рассылок')
     periodicity = models.CharField(max_length=10, choices=PERIODICITY, default='ежедневно', verbose_name='периодичность')
@@ -68,7 +68,8 @@ class MailingAttempt(models.Model):
     STATUS = [('success', 'успешно'),
               ('failed', 'неудачно')]
 
-    mailing = models.ForeignKey(Mailing, related_name='attempts', on_delete=models.CASCADE, verbose_name='рассылка')
+    mailing = models.ForeignKey(Mailing, related_name='mailing', on_delete=models.CASCADE, verbose_name='рассылка')
+    client = models.ForeignKey(Client, related_name='client', on_delete=models.CASCADE, verbose_name='')
     last_time = models.DateTimeField(auto_now_add=True, verbose_name='дата и время последней попытки')
     status = models.CharField(max_length=10, choices=STATUS, default='failed', verbose_name='статус попытки')
     response = models.TextField(**NULLABLE, verbose_name='ответ сервера')

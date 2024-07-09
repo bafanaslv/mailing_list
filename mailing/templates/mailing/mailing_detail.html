@@ -7,8 +7,7 @@
           <div class="card-body">
             <p class="card-text">Тема письма: {{ object.message.title }}</p>
             <p class="card-text">Содержимое: {{ object.message.body }}</p>
-            <p class="card-text">Адресат: {{ object.client.name }}</p>
-            <p class="card-text">E-mail: {{ object.client.email }}</p>
+            <p class="card-text">Адресаты: {{ client.name }}</p>
             <p class="card-text">Начало отправки: {{ object.begin_time }}</p>
             <p class="card-text">Окончание отправки: {{ object.end_time }}</p>
             <p class="card-text">Периодичность: {{ object.periodicity}}</p>

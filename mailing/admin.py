@@ -14,9 +14,9 @@ class MessageAdmin(admin.ModelAdmin):
 
 @admin.register(Mailing)
 class MailingAdmin(admin.ModelAdmin):
-    list_display = ("id", "message", "client", "begin_time", "end_time", "periodicity", "status")
+    list_display = ("id", "message", "begin_time", "end_time", "periodicity", "status")
 
 
 @admin.register(MailingAttempt)
 class MailingAttemptAdmin(admin.ModelAdmin):
-    list_display = ("id", "mailing", "last_time", "status", "response", "email")
+    list_display = ("id", "mailing", "client", "last_time", "status", "response", "email")

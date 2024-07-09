@@ -94,4 +94,9 @@ STATICFILES_DIRS = (
 # STATIC_PATH = os.path.join(BASE_DIR, 'static')
 # STATICFILES_DIRS = (os.path.join(BASE_DIR, 'static'),)
 
-DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+EMAIL_HOST = 'smtp.yandex.ru'
+EMAIL_PORT = 465
+EMAIL_HOST_USER = "foxship@yandex.ru"
+EMAIL_HOST_PASSWORD = "Y1559&lvs"
+EMAIL_USE_TLS = False
+EMAIL_USE_SSL = True

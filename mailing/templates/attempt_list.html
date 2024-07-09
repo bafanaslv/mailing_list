@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="album py-5 bg-body-tertiary">
+    <div class="container">
+      <p class="mb-1">Раздел: Просмотр логов рассылок</p>
+      <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
+      {% for attempt in object_list %}
+          <div class="col">
+            <div class="card-footer text-center shadow-sm">
+              <div class="card-body">
+                <p class="card-text">Тема сообщения: {{ attempt.mailing.message.name }}</p>
+                <p class="card-text">Адресат: {{ attempt.mailing.client.email }}</p>
+                <p class="card-text">Время последней рассылки: {{ attempt.last_time }}</p>
+                <p class="card-text">Статус: {{ attempt.status }}</p>
+                <p class="card-text">Ответ сервера: {{ attempt.response }}</p>
+              </div>
+            </div>
+          </div>
+      {% endfor %}
+    </div>
+  </div>
+</div>
+{% endblock %}
