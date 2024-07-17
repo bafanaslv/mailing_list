@@ -97,6 +97,6 @@ STATICFILES_DIRS = (
 EMAIL_HOST = 'smtp.yandex.ru'
 EMAIL_PORT = 465
 EMAIL_HOST_USER = "foxship@yandex.ru"
-EMAIL_HOST_PASSWORD = "Y1559&lvs"
+EMAIL_HOST_PASSWORD = "xpueoalkziizcajm"
 EMAIL_USE_TLS = False
 EMAIL_USE_SSL = True
