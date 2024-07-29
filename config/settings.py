@@ -20,6 +20,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 
     'mailing',
+    'django_apscheduler',
 ]
 
 MIDDLEWARE = [
@@ -103,3 +104,4 @@ EMAIL_USE_SSL = True
 
 SERVER_EMAIL = EMAIL_HOST_USER
 DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
+APSCHEDULER_DATETIME_FORMAT = 'N j, Y, f:s a'
