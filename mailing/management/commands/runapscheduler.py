@@ -1,15 +1,12 @@
 import logging
-
 from django.conf import settings
-
-from apscheduler.schedulers.blocking import BlockingScheduler
-from apscheduler.triggers.cron import CronTrigger
+from apscheduler.schedulers.background import BlockingScheduler
+from apscheduler.triggers.interval import IntervalTrigger
 from django.core.management.base import BaseCommand
 from django_apscheduler.jobstores import DjangoJobStore
 from django_apscheduler.models import DjangoJobExecution
 from django_apscheduler import util
-
-from mailing.scheduler import daily_tasks, weekly_tasks, monthly_tasks
+from mailing.utils import check_and_send_mailings
 
 logger = logging.getLogger(__name__)
 
@@ -20,58 +17,31 @@ def delete_old_job_executions(max_age=604_800):
 
 
 class Command(BaseCommand):
-    """Класс для запуска планировщика задач APScheduler"""
-    help = "Runs APScheduler."
+    help = 'Runs APScheduler'
 
     def handle(self, *args, **options):
-        """Запускает планировщик задач"""
-        scheduler = BlockingScheduler(timezone=settings.TIME_ZONE)
+        scheduler = BlockingScheduler(timzone=settings.TIME_ZONE)
         scheduler.add_jobstore(DjangoJobStore(), "default")
 
         scheduler.add_job(
-            daily_tasks,
-            trigger=CronTrigger(minute="*/1"),
-            id="daily_job",
+            check_and_send_mailings,
+            trigger=IntervalTrigger(seconds=10),
+            id="check_mailings",
+            seconds=10,
             max_instances=1,
             replace_existing=True,
-        )
-        logger.info("Added job 'daily_job'.")
+            # coalesce=True,
+            # misfire_grace_time=60,
 
-        scheduler.add_job(
-            weekly_tasks,
-            trigger=CronTrigger(day_of_week="*/1"),
-            id="weekly_job",
-            max_instances=1,
-            replace_existing=True,
         )
-        logger.info("Added job 'weekly_job'.")
 
-        scheduler.add_job(
-            monthly_tasks,
-            trigger=CronTrigger(day="*/30"),
-            id="monthly_job",
-            max_instances=1,
-            replace_existing=True,
-        )
-        logger.info("Added job 'monthly_job'.")
-
-        scheduler.add_job(
-            delete_old_job_executions,
-            trigger=CronTrigger(
-                day_of_week="mon", hour="00", minute="00"
-            ),  # полночь понедельника
-            id="delete_old_job_executions",
-            max_instances=1,
-            replace_existing=True,
-        )
-        logger.info(
-            "Added weekly job: 'delete_old_job_executions'."
-        )
+        logger.info("added job: my_job")
 
         try:
-            logger.info("Starting scheduler...")
+            logger.info("starting scheduler")
+            print('starting scheduler')
             scheduler.start()
         except KeyboardInterrupt:
-            logger.info("Stopping scheduler...")
+            logger.info("stopping scheduler")
             scheduler.shutdown()
-            logger.info("Scheduler shut down successfully!")
+            logger.info("scheduler shut down successfully")
