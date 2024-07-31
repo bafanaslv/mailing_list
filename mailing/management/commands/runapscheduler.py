@@ -6,7 +6,7 @@ from django.core.management.base import BaseCommand
 from django_apscheduler.jobstores import DjangoJobStore
 from django_apscheduler.models import DjangoJobExecution
 from django_apscheduler import util
-from mailing.utils import check_and_send_mailings
+from mailing.utils import send_mailings
 
 logger = logging.getLogger(__name__)
 
@@ -24,15 +24,12 @@ class Command(BaseCommand):
         scheduler.add_jobstore(DjangoJobStore(), "default")
 
         scheduler.add_job(
-            check_and_send_mailings,
+            send_mailings,
             trigger=IntervalTrigger(seconds=10),
             id="check_mailings",
             seconds=10,
             max_instances=1,
             replace_existing=True,
-            # coalesce=True,
-            # misfire_grace_time=60,
-
         )
 
         logger.info("added job: my_job")

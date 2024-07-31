@@ -69,7 +69,7 @@ class MailingAttempt(models.Model):
     STATUS = [('success', 'успешно'),
               ('failed', 'неудачно')]
 
-    mailing = models.ForeignKey(Mailing, related_name='mailing', on_delete=models.CASCADE, verbose_name='рассылка')
+    mailing = models.ForeignKey(Mailing, related_name='attempts', on_delete=models.CASCADE, verbose_name='рассылка')
     client = models.ForeignKey(Client, related_name='client', on_delete=models.CASCADE, verbose_name='')
     last_time = models.DateTimeField(auto_now_add=True, verbose_name='дата и время последней попытки')
     status = models.CharField(max_length=10, choices=STATUS, default='failed', verbose_name='статус попытки')
