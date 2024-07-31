@@ -2,7 +2,7 @@ import logging
 from django.utils import timezone
 import pytz
 from smtplib import SMTPException
-from mailing.models import MailingAttempt, Mailing
+from mailing.models import Mailing, MailingAttempt
 from django.core.mail import send_mail
 from django.conf import settings
 

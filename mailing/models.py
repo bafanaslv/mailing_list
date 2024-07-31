@@ -60,6 +60,7 @@ class Mailing(models.Model):
         self.save()
 
     class Meta:
+        ordering = ['-begin_time']
         verbose_name = 'рассылка'
         verbose_name_plural = 'рассылки'
 
