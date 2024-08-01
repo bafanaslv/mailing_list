@@ -1,7 +1,8 @@
 import logging
+import smtplib
+
 from django.utils import timezone
 import pytz
-from smtplib import SMTPException
 from mailing.models import Mailing, MailingAttempt
 from django.core.mail import send_mail
 from django.conf import settings
@@ -52,33 +53,32 @@ def send_mailing(mailing):
     recipients = mailing.client.all()
     title = mailing.message.title
     body = mailing.message.body
-
+    clients_list = []
     for client in recipients:
-        try:
-            # Отправляем письмо
-            server_response = send_mail(
-                subject=title,
-                message=body,
-                from_email=settings.EMAIL_HOST_USER,
-                recipient_list=[client.email],
-                fail_silently=False,
-            )
-            status = 'success'
-            logger.info(f'Письмо успешно отправлено клиенту {client.email} для рассылки {mailing.message}.')
-        except SMTPException as e:
-            # При ошибке почтовика получаем ответ сервера - ошибка, которая записывается в e
-            server_response = str(e)
-            status = 'failed'
-            logger.error(f'Ошибка при отправке письма клиенту {client.email} для рассылки {mailing.message}: {server_response}')
+        clients_list.append(client.email)
+    try:
+        # Отправляем письмо
+        server_response = send_mail(
+            subject=title,
+            message=body,
+            from_email=settings.EMAIL_HOST_USER,
+            recipient_list=clients_list,
+            fail_silently=False,
+        )
+        status = 'success'
+        logger.info(f'Письмо успешно отправлено клиентам {clients_list} для рассылки {mailing.message}.')
+    except smtplib.SMTPException as error:
+        # При ошибке почтового сервера получаем ответ - ошибка, которая записывается в error
+        server_response = str(error)
+        status = 'failed'
+        logger.error(f'Ошибка при отправке письма клиентам {clients_list} для рассылки {mailing.message}: {server_response}')
 
         # Записываем попытку рассылки
-        MailingAttempt.objects.create(
-            mailing=mailing,
-            status=status,
-            response=server_response,
-            email=client.email,
-            client=client
-        )
+    MailingAttempt.objects.create(
+        mailing=mailing,
+        status=status,
+        response=server_response
+    )
 
     mailing.start_mailing()
     logger.info(f'Рассылка {mailing.message} начата.')

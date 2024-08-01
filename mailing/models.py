@@ -70,14 +70,12 @@ class MailingAttempt(models.Model):
               ('failed', 'неудачно')]
 
     mailing = models.ForeignKey(Mailing, related_name='attempts', on_delete=models.CASCADE, verbose_name='рассылка')
-    client = models.ForeignKey(Client, related_name='client', on_delete=models.CASCADE, verbose_name='')
     last_time = models.DateTimeField(auto_now_add=True, verbose_name='дата и время последней попытки')
     status = models.CharField(max_length=10, choices=STATUS, default='failed', verbose_name='статус попытки')
     response = models.TextField(**NULLABLE, verbose_name='ответ сервера')
-    email = models.CharField(max_length=100, **NULLABLE, verbose_name='почта')
 
     def str(self):
-        return f'Попытка: {self.email} - {self.status}'
+        return f'Попытка: {self.mailing} - {self.status}'
 
     class Meta:
         ordering = ['-last_time']

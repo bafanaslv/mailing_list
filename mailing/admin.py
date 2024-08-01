@@ -19,4 +19,4 @@ class MailingAdmin(admin.ModelAdmin):
 
 @admin.register(MailingAttempt)
 class MailingAttemptAdmin(admin.ModelAdmin):
-    list_display = ("id", "mailing", "client", "last_time", "status", "response", "email")
+    list_display = ("id", "mailing", "last_time", "status", "response")
