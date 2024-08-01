@@ -8,8 +8,8 @@
           <div class="col">
             <div class="card-footer text-center shadow-sm">
               <div class="card-body">
-                <p class="card-text">Тема сообщения: {{ attempt.mailing.message.name }}</p>
-                <p class="card-text">Адресат: {{ attempt.mailing.client.email }}</p>
+                <p class="card-text">Тема сообщения: {{ attempt.mailing.message.title }}</p>
+                <p class="card-text">Адресат: {{ attempt.client.email }}</p>
                 <p class="card-text">Время последней рассылки: {{ attempt.last_time }}</p>
                 <p class="card-text">Статус: {{ attempt.status }}</p>
                 <p class="card-text">Ответ сервера: {{ attempt.response }}</p>
