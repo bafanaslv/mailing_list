@@ -92,8 +92,3 @@ class ProfileView(UpdateView):
     model = User
     form_class = UserProfileForm
     success_url = reverse_lazy('users:profile')
-
-
-from django.shortcuts import render
-
-# Create your views here.

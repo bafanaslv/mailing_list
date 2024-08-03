@@ -8,7 +8,6 @@
       <div class="col-sm-4 offset-md-1 py-4">
         <h4 class="text-white">Навигация</h4>
         <ul class="list-unstyled">
-{#          <li><a href="{% url 'catalog:products_list' %}" class="text-white">Главная</a></li>#}
           {% if user.is_authenticated %}
             <form id="logout-form" method="post" action="{% url 'users:logout' %}" style="display: none;">
                 {% csrf_token %}
@@ -18,7 +17,6 @@
             <li><a href="{% url 'users:login' %}" class="text-white">Войти</a></li>
           {% endif %}
           <li><a href="{% url 'users:register' %}" class="text-white">Регистрация</a></li>
-{#          <li><a href="{% url 'blog:list' %}" class="text-white">Блоги</a></li>#}
         </ul>
       </div>
     </div>
