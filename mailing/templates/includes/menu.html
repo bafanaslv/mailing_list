@@ -2,12 +2,13 @@
   <div class="container">
     <div class="row">
       <div class="col-sm-8 col-md-7 py-4">
-        <h4 class="text-white">Каталог смартфонов</h4>
-        <p class="text-muted">Смартфоны на любой вкус и на любой карман.</p>
+        <h4 class="text-white">Серсис для рассылки сообщений</h4>
+        <p class="text-muted">Зарегистрируйтесь и отправляйте сообщения своим клиентам. Первые два месяца бесплатно.</p>
       </div>
       <div class="col-sm-4 offset-md-1 py-4">
         <h4 class="text-white">Навигация</h4>
         <ul class="list-unstyled">
+          <li><a href="{% url 'mailing:message_list' %}" class="text-white">Главная</a></li>
           {% if user.is_authenticated %}
             <form id="logout-form" method="post" action="{% url 'users:logout' %}" style="display: none;">
                 {% csrf_token %}

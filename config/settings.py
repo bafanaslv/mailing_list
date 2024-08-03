@@ -1,13 +1,16 @@
 from pathlib import Path
 import os
+from dotenv import load_dotenv
+
+load_dotenv()
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
-SECRET_KEY = 'django-insecure-%$w-ph3igxx)2%i@^mkhsh(#5^e2qzo31y%sr220j(+27e^z)='
+SECRET_KEY = os.getenv('SECRET_KEY')
 
-DEBUG = True
+DEBUG = os.getenv('DEBUG', False) == 'True'
 
 ALLOWED_HOSTS = ['*']
 
@@ -19,9 +22,9 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
-    'mailing',
+    'mailing.apps.MailingConfig',
     'django_apscheduler',
-    'users',
+    'users.apps.UsersConfig',
 ]
 
 MIDDLEWARE = [
@@ -57,9 +60,11 @@ WSGI_APPLICATION = 'config.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'mailing_list',
-        'USER': 'postgres',
-        'PASSWORD': '12345'
+        'NAME': os.getenv('NAME'),
+        'USER': os.getenv('USER'),
+        'PASSWORD': os.getenv('PASSWORD'),
+        'HOST': os.getenv('HOST'),
+        'PORT': os.getenv('PORT'),
     }
 }
 
@@ -94,19 +99,31 @@ AUTH_USER_MODEL = 'users.User'
 #     BASE_DIR / 'static',
 # )
 
+LOGIN_REDIRECT_URL = '/'
+LOGOUT_REDIRECT_URL = '/'
+
 STATIC_PATH = os.path.join(BASE_DIR, 'static')
 STATICFILES_DIRS = (os.path.join(BASE_DIR, 'static'),)
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_HOST = 'smtp.yandex.ru'
-EMAIL_PORT = 465
-EMAIL_HOST_USER = "foxship@yandex.ru"
-EMAIL_HOST_PASSWORD = "jwhkbgjjodmtyhes"
-EMAIL_USE_TLS = False
-EMAIL_USE_SSL = True
+
+EMAIL_HOST = os.getenv('EMAIL_HOST')
+EMAIL_PORT = os.getenv('EMAIL_PORT')
+EMAIL_HOST_USER = os.getenv('EMAIL_HOST_USER')
+EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD')
+EMAIL_USE_TLS = os.getenv('EMAIL_USE_TLS', False) == 'True'
+EMAIL_USE_SSL = os.getenv('EMAIL_USE_SSL', False) == 'True'
 
 SERVER_EMAIL = EMAIL_HOST_USER
 DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
 APSCHEDULER_DATETIME_FORMAT = 'N j, Y, f:s a'
 APSCHEDULER_RUN_NOW_TIMEOUT = 25
+
+CACHE_ENABLED = True
+if CACHE_ENABLED:
+    CACHES = {
+        'default': {
+            'BACKEND': 'django.core.cache.backends.redis.RedisCache',
+            'LOCATION': os.getenv("LOCATION")
+        }
+    }

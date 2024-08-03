@@ -7,7 +7,7 @@ from users.models import User
 class UserRegisterForm(StyleFormMixin, UserCreationForm):
     class Meta:
         model = User
-        fields = ('email', 'password1', 'password2')
+        fields = ('email', 'password1', 'password2', 'company', 'phone')
 
 
 class PasswordResetForm(forms.Form):
@@ -17,4 +17,4 @@ class PasswordResetForm(forms.Form):
 class UserProfileForm(UserCreationForm):
     class Meta:
         model = User
-        fields = ('email', 'first_name', 'last_name', 'phone', 'avatar')
+        fields = ('company', 'phone', 'email', 'first_name', 'last_name', 'phone', 'avatar')
