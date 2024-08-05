@@ -93,9 +93,10 @@ class MessageCreateView(CreateView):
     success_url = reverse_lazy("mailing:message_list")
 
     def form_valid(self, form):
-        message = form.save()
-        message.owner = self.request.user
-        message.save()
+        if form.is_valid():
+            message = form.save()
+            message.owner = self.request.user
+            message.save()
         return super().form_valid(form)
 
 
