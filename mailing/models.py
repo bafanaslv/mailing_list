@@ -7,7 +7,7 @@ NULLABLE = {'blank': True, 'null': True}
 
 
 class Client(models.Model):
-    owner = models.ForeignKey(User, verbose_name='Владелец', on_delete=models.CASCADE, related_name="clients")
+    owner = models.ForeignKey(User, verbose_name='Владелец', on_delete=models.CASCADE, related_name="clients", **NULLABLE)
     name = models.CharField(max_length=100, verbose_name='ФИО')
     email = models.EmailField(max_length=100, verbose_name='E-mail')
     comment = models.TextField(**NULLABLE, verbose_name='комментарий')
@@ -21,7 +21,7 @@ class Client(models.Model):
 
 
 class Message(models.Model):
-    owner = models.ForeignKey(User, verbose_name='Владелец', on_delete=models.CASCADE, related_name="messages")
+    owner = models.ForeignKey(User, verbose_name='Владелец', on_delete=models.CASCADE, related_name="messages", **NULLABLE)
     title = models.CharField(max_length=150, verbose_name='заголовок')
     body = models.TextField(verbose_name='сообщение')
     created_at = models.DateTimeField(auto_now_add=True, verbose_name='создано')
@@ -43,7 +43,7 @@ class Mailing(models.Model):
                    ("weekly", "еженедельно"),
                    ("monthly", "ежемесячно")]
 
-    owner = models.ForeignKey(User, verbose_name='Владелец', on_delete=models.CASCADE, related_name="mailings")
+    owner = models.ForeignKey(User, verbose_name='Владелец', on_delete=models.CASCADE, related_name="mailings", **NULLABLE)
     message = models.ForeignKey(Message, related_name='messages', on_delete=models.CASCADE, verbose_name='сообщение')
     client = models.ManyToManyField(Client, verbose_name='адресат')
     begin_time = models.DateTimeField(verbose_name='дата и время первой отправки рассылки')
@@ -74,7 +74,6 @@ class MailingAttempt(models.Model):
     STATUS = [('success', 'успешно'),
               ('failed', 'неудачно')]
 
-    owner = models.ForeignKey(User, verbose_name='Владелец', on_delete=models.CASCADE, related_name="attempts", default=0)
     mailing = models.ForeignKey(Mailing, related_name='attempts', on_delete=models.CASCADE, verbose_name='рассылка')
     last_time = models.DateTimeField(auto_now_add=True, verbose_name='дата и время последней попытки')
     status = models.CharField(max_length=10, choices=STATUS, default='failed', verbose_name='статус попытки')
