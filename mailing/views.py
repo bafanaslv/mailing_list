@@ -18,6 +18,12 @@ class MailingCreateView(CreateView):
             new_post.save()
         return super().form_valid(form)
 
+    def form_valid(self, form):
+        mailing = form.save()
+        mailing.owner = self.request.user
+        mailing.save()
+        return super().form_valid(form)
+
 
 class MailingUpdateView(UpdateView):
     model = Mailing
@@ -57,6 +63,12 @@ class ClientCreateView(CreateView):
     template_name = "client_form.html"
     success_url = reverse_lazy("mailing:client_list")
 
+    def form_valid(self, form):
+        client = form.save()
+        client.owner = self.request.user
+        client.save()
+        return super().form_valid(form)
+
 
 class ClientUpdateView(UpdateView):
     model = Client
@@ -82,6 +94,12 @@ class MessageCreateView(CreateView):
     template_name = "message_form.html"
     success_url = reverse_lazy("mailing:message_list")
 
+    def form_valid(self, form):
+        message = form.save()
+        message.owner = self.request.user
+        message.save()
+        return super().form_valid(form)
+
 
 class MessageUpdateView(UpdateView):
     model = Message
@@ -99,4 +117,3 @@ class MessageDeleteView(DeleteView):
 class AttemptListView(ListView):
     model = MailingAttempt
     template_name = "attempt_list.html"
-
