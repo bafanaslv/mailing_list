@@ -1,3 +1,5 @@
+from django.contrib.auth.mixins import LoginRequiredMixin
+from mailing.forms import ClientForm
 from mailing.models import Client, MailingAttempt, Mailing, Message
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 from django.urls import reverse_lazy
@@ -15,13 +17,8 @@ class MailingCreateView(CreateView):
     def form_valid(self, form):
         if form.is_valid():
             new_post = form.save(commit=False)
+            new_post.owner = self.request.user
             new_post.save()
-        return super().form_valid(form)
-
-    def form_valid(self, form):
-        mailing = form.save()
-        mailing.owner = self.request.user
-        mailing.save()
         return super().form_valid(form)
 
 
@@ -57,16 +54,24 @@ class ClientListView(ListView):
     template_name = "client_list.html"
 
 
-class ClientCreateView(CreateView):
+class ClientCreateView(CreateView, LoginRequiredMixin):
     model = Client
-    fields = ("name", "email")
+    form_class = ClientForm
     template_name = "client_form.html"
     success_url = reverse_lazy("mailing:client_list")
 
-    def form_valid(self, form):
+    def form_invalid(self, form):
         client = form.save()
         client.owner = self.request.user
+        print(client.owner)
         client.save()
+
+    def form_valid(self, form):
+        if form.is_valid():
+            client = form.save()
+            client.owner = self.request.user
+            print(client.owner)
+            client.save()
         return super().form_valid(form)
 
 
