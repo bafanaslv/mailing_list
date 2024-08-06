@@ -1,3 +1,5 @@
+from django.contrib.auth.mixins import LoginRequiredMixin
+from mailing.forms import ClientForm, MessageForm, MailingForm
 from mailing.models import Client, MailingAttempt, Mailing, Message
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 from django.urls import reverse_lazy
@@ -9,25 +11,20 @@ class MailingListView(ListView):
 
 class MailingCreateView(CreateView):
     model = Mailing
-    fields = ("message", "client", "begin_time", "end_time", "end_time", "periodicity", "status")
+    form_class = MailingForm
     success_url = reverse_lazy("mailing:list")
 
     def form_valid(self, form):
         if form.is_valid():
             new_post = form.save(commit=False)
+            new_post.owner = self.request.user
             new_post.save()
-        return super().form_valid(form)
-
-    def form_valid(self, form):
-        mailing = form.save()
-        mailing.owner = self.request.user
-        mailing.save()
         return super().form_valid(form)
 
 
 class MailingUpdateView(UpdateView):
     model = Mailing
-    fields = ("message", "client", "begin_time", "end_time", "end_time", "periodicity", "status")
+    form_class = MailingForm
     success_url = reverse_lazy("mailing:list")
 
     def form_valid(self, form):
@@ -57,22 +54,23 @@ class ClientListView(ListView):
     template_name = "client_list.html"
 
 
-class ClientCreateView(CreateView):
+class ClientCreateView(CreateView, LoginRequiredMixin):
     model = Client
-    fields = ("name", "email")
+    form_class = ClientForm
     template_name = "client_form.html"
     success_url = reverse_lazy("mailing:client_list")
 
     def form_valid(self, form):
-        client = form.save()
-        client.owner = self.request.user
-        client.save()
+        if form.is_valid():
+            client = form.save()
+            client.owner = self.request.user
+            client.save()
         return super().form_valid(form)
 
 
 class ClientUpdateView(UpdateView):
     model = Client
-    fields = ("name", "email")
+    form_class = ClientForm
     template_name = "client_form.html"
     success_url = reverse_lazy("mailing:client_list")
 
@@ -90,20 +88,21 @@ class MessageListView(ListView):
 
 class MessageCreateView(CreateView):
     model = Message
-    fields = ("title", "body")
+    form_class = MessageForm
     template_name = "message_form.html"
     success_url = reverse_lazy("mailing:message_list")
 
     def form_valid(self, form):
-        message = form.save()
-        message.owner = self.request.user
-        message.save()
+        if form.is_valid():
+            message = form.save()
+            message.owner = self.request.user
+            message.save()
         return super().form_valid(form)
 
 
 class MessageUpdateView(UpdateView):
     model = Message
-    fields = ("title", "body")
+    form_class = MessageForm
     template_name = "message_form.html"
     success_url = reverse_lazy("mailing:message_list")
 

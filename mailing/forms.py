@@ -1,4 +1,5 @@
-from django.forms import BooleanField
+from django.forms import BooleanField, ModelForm
+from mailing.models import Client, Message, Mailing
 
 
 class StyleFormMixin(object):
@@ -10,3 +11,20 @@ class StyleFormMixin(object):
             else:
                 field.widget.attrs["class"] = "form-control"
 
+
+class ClientForm(StyleFormMixin, ModelForm):
+    class Meta:
+        model = Client
+        exclude = ("owner",)
+
+
+class MessageForm(StyleFormMixin, ModelForm):
+    class Meta:
+        model = Message
+        exclude = ("owner",)
+
+
+class MailingForm(StyleFormMixin, ModelForm):
+    class Meta:
+        model = Mailing
+        exclude = ("status", "owner")
