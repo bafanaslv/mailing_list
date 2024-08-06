@@ -6,7 +6,6 @@
       <a href="{% url 'mailing:message_form' %}" class="btn btn-primary my-2" >Добавить сообщение</a>
       <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
       {% for message in object_list %}
-        {% if user == client.owner %}
           <div class="col">
             <div class="card-footer text-center shadow-sm">
               <div class="card-body">
@@ -19,7 +18,6 @@
               </div>
             </div>
           </div>
-        {% endif %}
       {% endfor %}
     </div>
   </div>

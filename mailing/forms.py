@@ -1,4 +1,6 @@
 from django.forms import BooleanField, ModelForm
+
+from mailing import models
 from mailing.models import Client, Message, Mailing
 
 
@@ -25,6 +27,12 @@ class MessageForm(StyleFormMixin, ModelForm):
 
 
 class MailingForm(StyleFormMixin, ModelForm):
+    def __init__(self, *args, **kwargs):
+        user = kwargs.pop('user')
+        super().__init__(*args, **kwargs)
+        self.fields['client'].queryset = Client.objects.filter(owner=user)
+        self.fields['message'].queryset = Message.objects.filter(owner=user)
+
     class Meta:
         model = Mailing
         exclude = ("status", "owner")

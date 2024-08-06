@@ -8,6 +8,13 @@ from django.urls import reverse_lazy
 class MailingListView(ListView):
     model = Mailing
 
+    def get_queryset(self):
+        user = self.request.user
+        if not user.is_authenticated:
+            user = None
+        queryset = Mailing.objects.filter(owner=user)
+        return queryset
+
 
 class MailingCreateView(CreateView):
     model = Mailing
@@ -21,6 +28,11 @@ class MailingCreateView(CreateView):
             new_post.save()
         return super().form_valid(form)
 
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        kwargs.update({'user': self.request.user})
+        return kwargs
+
 
 class MailingUpdateView(UpdateView):
     model = Mailing
@@ -32,6 +44,11 @@ class MailingUpdateView(UpdateView):
             new_post = form.save(commit=False)
             new_post.save()
         return super().form_valid(form)
+
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        kwargs.update({'user': self.request.user})
+        return kwargs
 
 
 class MailingDetailView(DetailView):
@@ -52,6 +69,13 @@ class MailingDeleteView(DeleteView):
 class ClientListView(ListView):
     model = Client
     template_name = "client_list.html"
+
+    def get_queryset(self):
+        user = self.request.user
+        if not user.is_authenticated:
+            user = None
+        queryset = Client.objects.filter(owner=user)
+        return queryset
 
 
 class ClientCreateView(CreateView, LoginRequiredMixin):
@@ -84,6 +108,13 @@ class ClientDeleteView(DeleteView):
 class MessageListView(ListView):
     model = Message
     template_name = "message_list.html"
+
+    def get_queryset(self):
+        user = self.request.user
+        if not user.is_authenticated:
+            user = None
+        queryset = Message.objects.filter(owner=user)
+        return queryset
 
 
 class MessageCreateView(CreateView):
