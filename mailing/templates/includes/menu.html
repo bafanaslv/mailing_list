@@ -2,7 +2,7 @@
   <div class="container">
     <div class="row">
       <div class="col-sm-8 col-md-7 py-4">
-        <h4 class="text-white">Серсис для рассылки сообщений</h4>
+        <h4 class="text-white">Сервис для рассылки сообщений</h4>
         <p class="text-muted">Зарегистрируйтесь и отправляйте сообщения своим клиентам. Первые два месяца бесплатно.</p>
       </div>
       <div class="col-sm-4 offset-md-1 py-4">
@@ -16,8 +16,8 @@
             <li><a href="{% url 'users:logout' %}" class="text-white">Выход</a></li>
           {% else %}
             <li><a href="{% url 'users:login' %}" class="text-white">Войти</a></li>
+              <li><a href="{% url 'users:register' %}" class="text-white">Регистрация</a></li>
           {% endif %}
-          <li><a href="{% url 'users:register' %}" class="text-white">Регистрация</a></li>
         </ul>
       </div>
     </div>

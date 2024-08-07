@@ -147,3 +147,8 @@ class MessageDeleteView(DeleteView):
 class AttemptListView(ListView):
     model = MailingAttempt
     template_name = "attempt_list.html"
+
+
+class MainView(ListView):
+    model = Mailing
+    template_name = "main.html"

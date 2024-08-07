@@ -24,6 +24,7 @@ INSTALLED_APPS = [
 
     'mailing.apps.MailingConfig',
     'django_apscheduler',
+    'blogs.apps.BlogsConfig',
     'users.apps.UsersConfig',
 ]
 
