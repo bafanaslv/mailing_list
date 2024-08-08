@@ -1,7 +1,7 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
 from mailing.forms import ClientForm, MessageForm, MailingForm
 from mailing.models import Client, MailingAttempt, Mailing, Message
-from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
+from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView, TemplateView
 from django.urls import reverse_lazy
 
 
@@ -152,3 +152,7 @@ class AttemptListView(ListView):
 class MainView(ListView):
     model = Mailing
     template_name = "main.html"
+
+
+class MainListView(TemplateView):
+    template_name = 'main.html'

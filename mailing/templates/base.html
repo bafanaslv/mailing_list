@@ -178,25 +178,11 @@
 {% endblock %}
 </main>
 
-     <div class="album py-5 bg-body-tertiary">
-        <div class="container">
-          <div class="col-3">
-            <div class="card-footer text-center shadow-sm">
-              <div class="card-body">
-                <p class="card-text">Количество рассылок: </p>
-                <p class="card-text">из них активных: </p>
-                <p class="card-text">Количество клиентов: </p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
     <footer class="text-body-secondary py-5">
       <div class="container">
         <p class="float-end mb-1">
         {% if user.is_authenticated %}
-          <a href="{% url 'mailing:client_list' %}">Главная</a>
+          <a href="{% url 'mailing:main' %}">Главная</a>
         {% else %}
           <a href="{% url 'users:register' %}">Регистрация</a>
         {% endif %}
