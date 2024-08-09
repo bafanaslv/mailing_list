@@ -1,4 +1,6 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
+
+from blogs.models import Blog
 from mailing.forms import ClientForm, MessageForm, MailingForm
 from mailing.models import Client, MailingAttempt, Mailing, Message
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView, TemplateView
@@ -153,8 +155,9 @@ class BaseListView(TemplateView):
     template_name = 'base.html'
 
     def get_context_data(self, **kwargs):
-        context = super(Mailing, self).get_context_data(**kwargs)
+        context = super().get_context_data(**kwargs)
         context["count_mailing"] = Mailing.objects.all().count()
         context["count_mailing_enabled"] = Mailing.objects.filter(status__in=['created', 'started']).count()
-        print(context)
+        context["unique_users"] = len(Client.objects.values_list("email").distinct())
+        context["blog_list"] = Blog.objects.order_by('?').all()[:3]
         return context

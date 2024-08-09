@@ -171,18 +171,28 @@
       </div>
     </div>
     </section>
-    <div class="album py-5 bg-body-tertiary">
     <div class="container">
-      <div class="col-3">
-        <div class="card-footer text-center shadow-sm">
-          <div class="card-body">
-            <p class="card-text">Количество рассылок: {{ count_mailing }}</p>
-            <p class="card-text">из них активных: </p>
-            <p class="card-text">Количество клиентов: </p>
-          </div>
-        </div>
+      <div class="col-12">
+        <ul class="list-group list-group-horizontal">
+          <li class="list-group-item">Количество рассылок: {{ count_mailing }}</li>
+          <li class="list-group-item">Из них активных: {{ count_mailing_enabled }}</li>
+          <li class="list-group-item">Количество клиентов: {{ unique_users }}</li>
+        </ul>
       </div>
     </div>
+    <div class="container">
+      <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
+      {% for blog in blog_list %}
+          <div class="col">
+            <div class="card-footer text-center shadow-sm">
+              <div class="card-body">
+                <p class="card-text">Тема: {{ blog.title }}</p>
+                <p class="card-text">Сообщение: {{ blog.body }}</p>
+              </div>
+            </div>
+          </div>
+      {% endfor %}
+      </div>
 
     {% block content %}
     {% endblock %}

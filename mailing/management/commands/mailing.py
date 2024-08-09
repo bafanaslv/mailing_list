@@ -17,16 +17,16 @@ class Command(BaseCommand):
         mailings = Mailing.objects.filter(status__in=['created', 'started'])
         for mailing in mailings:
             self.send_mailing(mailing)
-            # if mailing.status == 'completed':
-            #     continue
-            # if mailing.status == 'created':
-            #     if self.should_send_mailing(mailing, msk_time):
-            #         self.send_mailing(mailing)
-            # elif mailing.status == 'started':
-            #     if mailing.end_time and mailing.end_time <= msk_time:
-            #         mailing.complete_mailing()
-            #     elif self.should_send_mailing(mailing, msk_time):
-            #         self.send_mailing(mailing)
+            if mailing.status == 'completed':
+                continue
+            if mailing.status == 'created':
+                if self.should_send_mailing(mailing, msk_time):
+                    self.send_mailing(mailing)
+            elif mailing.status == 'started':
+                if mailing.end_time and mailing.end_time <= msk_time:
+                    mailing.complete_mailing()
+                elif self.should_send_mailing(mailing, msk_time):
+                    self.send_mailing(mailing)
 
     def should_send_mailing(self, mailing, now):
         last_attempt = mailing.attempts.order_by('-last_time').first()
