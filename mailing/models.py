@@ -37,7 +37,8 @@ class Message(models.Model):
 class Mailing(models.Model):
     STATUS = [("created", "создана"),
               ("started", "запущена"),
-              ("completed", "завершена")]
+              ("completed", "завершена"),
+              ("disabled", "отключена")]
 
     PERIODICITY = [("daily", "ежедневно"),
                    ("weekly", "еженедельно"),

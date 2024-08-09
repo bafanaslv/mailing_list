@@ -2,7 +2,7 @@
 {% block content %}
 <div class="album py-5 bg-body-tertiary">
   <div class="container">
-   {% if user.is_authenticated %}
+{#   {% if user.is_authenticated %}#}
      <p1 class="mb-1">Раздел: Клиенты</p1>
      <a href="{% url 'mailing:client_form' %}" class="btn btn-primary my-2" >Добавить клиента</a>
      <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
@@ -21,7 +21,7 @@
           </div>
       {% endfor %}
      </div>
-   {% endif %}
+{#   {% endif %}#}
   </div>
 </div>
 {% endblock %}

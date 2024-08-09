@@ -5,7 +5,7 @@ from mailing import views
 app_name = MailingConfig.name
 
 urlpatterns = [
-    path('', views.MainListView.as_view(), name='main'),
+    path('', views.BaseListView.as_view(), name='base'),
     path('client/', views.ClientListView.as_view(), name='client_list'),
     path('mailing/', views.MailingListView.as_view(), name='list'),
     path('create/', views.MailingCreateView.as_view(), name='create'),

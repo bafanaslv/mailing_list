@@ -149,10 +149,12 @@ class AttemptListView(ListView):
     template_name = "attempt_list.html"
 
 
-class MainView(ListView):
-    model = Mailing
-    template_name = "main.html"
+class BaseListView(TemplateView):
+    template_name = 'base.html'
 
-
-class MainListView(TemplateView):
-    template_name = 'main.html'
+    def get_context_data(self, **kwargs):
+        context = super(Mailing, self).get_context_data(**kwargs)
+        context["count_mailing"] = Mailing.objects.all().count()
+        context["count_mailing_enabled"] = Mailing.objects.filter(status__in=['created', 'started']).count()
+        print(context)
+        return context
