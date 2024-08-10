@@ -159,40 +159,46 @@
     </header>
 <main>
     <section class="py-1 text-center container">
-    <div class="row py-lg-4">
-      <div class="col-lg-6 col-md-8 mx-auto">
-        <h1 class="fw-light">Сервис рассылок</h1>
-        {% if user.is_authenticated %}
-          <a class="btn btn-primary btn-sm"  href="{% url 'mailing:client_list' %}">Клиенты</a>
-          <a class="btn btn-primary btn-sm"  href="{% url 'mailing:message_list' %}">Сообщения</a>
-          <a class="btn btn-primary btn-sm"  href="{% url 'mailing:list' %}">Рассылки</a>
-          <a class="btn btn-primary btn-sm"  href="{% url 'mailing:attempt_list' %}">Просмотр логов</a>
-        {% endif %}
+      <div class="row py-lg-4">
+        <div class="col-lg-6 col-md-8 mx-auto">
+          <h1 class="fw-light">Сервис рассылок</h1>
+          {% if user.is_authenticated %}
+            <a class="btn btn-primary btn-sm"  href="{% url 'mailing:client_list' %}">Клиенты</a>
+            {% if not perms.users.can_blocked_user %}
+              <a class="btn btn-primary btn-sm"  href="{% url 'mailing:message_list' %}">Сообщения</a>
+            {% endif %}
+            <a class="btn btn-primary btn-sm"  href="{% url 'mailing:list' %}">Рассылки</a>
+            {% if not perms.mailing.can_disabled_mailing %}
+              <a class="btn btn-primary btn-sm"  href="{% url 'mailing:attempt_list' %}">Просмотр логов</a>
+            {% endif %}
+          {% endif %}
+        </div>
       </div>
-    </div>
     </section>
-    <div class="container">
-      <div class="col-12">
-        <ul class="list-group list-group-horizontal">
-          <li class="list-group-item">Количество рассылок: {{ count_mailing }}</li>
-          <li class="list-group-item">Из них активных: {{ count_mailing_enabled }}</li>
-          <li class="list-group-item">Количество клиентов: {{ unique_users }}</li>
-        </ul>
+    {% if unique_users > 0 or count_mailing > 0 or count_mailing_enabled > 0 %}
+      <div class="container">
+        <div class="col-12">
+          <ul class="list-group list-group-horizontal">
+            <li class="list-group-item">Количество рассылок: {{ count_mailing }}</li>
+            <li class="list-group-item">Из них активных: {{ count_mailing_enabled }}</li>
+            <li class="list-group-item">Количество клиентов: {{ unique_users }}</li>
+          </ul>
+        </div>
       </div>
-    </div>
-    <div class="container">
+      <div class="container">
       <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
       {% for blog in blog_list %}
-          <div class="col">
-            <div class="card-footer text-center shadow-sm">
-              <div class="card-body">
-                <p class="card-text">Тема: {{ blog.title }}</p>
-                <p class="card-text">Сообщение: {{ blog.body }}</p>
-              </div>
+        <div class="col">
+          <div class="card-footer text-center shadow-sm">
+            <div class="card-body">
+              <p class="card-text">Тема: {{ blog.title }}</p>
+              <p class="card-text">Сообщение: {{ blog.body }}</p>
             </div>
           </div>
+        </div>
       {% endfor %}
-      </div>
+    {% endif %}
+    </div>
 
     {% block content %}
     {% endblock %}

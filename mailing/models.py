@@ -18,6 +18,11 @@ class Client(models.Model):
     class Meta:
         verbose_name = 'клиент'
         verbose_name_plural = 'клиенты'
+        permissions = [
+            ("can_unpublish_product", 'Can unpublish product'),
+            ("can_change_product_description", "Can change product description"),
+            ("can_change_product_category", "Can change product category"),
+        ]
 
 
 class Message(models.Model):
@@ -69,6 +74,9 @@ class Mailing(models.Model):
         ordering = ['-begin_time']
         verbose_name = 'рассылка'
         verbose_name_plural = 'рассылки'
+        permissions = [
+            ("can_disabled_mailing", 'Can disabled mailing'),
+        ]
 
 
 class MailingAttempt(models.Model):

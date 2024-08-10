@@ -1,13 +1,12 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
-
-from blogs.models import Blog
 from mailing.forms import ClientForm, MessageForm, MailingForm
 from mailing.models import Client, MailingAttempt, Mailing, Message
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView, TemplateView
 from django.urls import reverse_lazy
+from mailing.utils import ContextMixin
 
 
-class MailingListView(ListView):
+class MailingListView(ContextMixin, ListView):
     model = Mailing
 
     def get_queryset(self):
@@ -16,6 +15,10 @@ class MailingListView(ListView):
             user = None
         queryset = Mailing.objects.filter(owner=user)
         return queryset
+
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super().get_main_data(**kwargs)
+        return context
 
 
 class MailingCreateView(CreateView):
@@ -68,7 +71,7 @@ class MailingDeleteView(DeleteView):
     success_url = reverse_lazy("mailing:list")
 
 
-class ClientListView(ListView):
+class ClientListView(ContextMixin, ListView):
     model = Client
     template_name = "client_list.html"
 
@@ -79,12 +82,8 @@ class ClientListView(ListView):
         queryset = Client.objects.filter(owner=user)
         return queryset
 
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context["count_mailing"] = Mailing.objects.all().count()
-        context["count_mailing_enabled"] = Mailing.objects.filter(status__in=['created', 'started']).count()
-        context["unique_users"] = len(Client.objects.values_list("email").distinct())
-        context["blog_list"] = Blog.objects.order_by('?').all()[:3]
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super().get_main_data(**kwargs)
         return context
 
 
@@ -115,7 +114,7 @@ class ClientDeleteView(DeleteView):
     success_url = reverse_lazy("mailing:client_list")
 
 
-class MessageListView(ListView):
+class MessageListView(ContextMixin,ListView):
     model = Message
     template_name = "message_list.html"
 
@@ -125,6 +124,10 @@ class MessageListView(ListView):
             user = None
         queryset = Message.objects.filter(owner=user)
         return queryset
+
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super().get_main_data(**kwargs)
+        return context
 
 
 class MessageCreateView(CreateView):
@@ -154,18 +157,18 @@ class MessageDeleteView(DeleteView):
     success_url = reverse_lazy("mailing:message_list")
 
 
-class AttemptListView(ListView):
+class AttemptListView(ContextMixin, ListView):
     model = MailingAttempt
     template_name = "attempt_list.html"
 
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super().get_main_data(**kwargs)
+        return context
 
-class BaseListView(TemplateView):
+
+class BaseListView(ContextMixin, TemplateView):
     template_name = 'base.html'
 
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context["count_mailing"] = Mailing.objects.all().count()
-        context["count_mailing_enabled"] = Mailing.objects.filter(status__in=['created', 'started']).count()
-        context["unique_users"] = len(Client.objects.values_list("email").distinct())
-        context["blog_list"] = Blog.objects.order_by('?').all()[:3]
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super().get_main_data(**kwargs)
         return context

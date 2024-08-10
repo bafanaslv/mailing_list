@@ -1,9 +1,10 @@
 import logging
 import smtplib
-
 from django.utils import timezone
 import pytz
-from mailing.models import Mailing, MailingAttempt
+
+from blogs.models import Blog
+from mailing.models import Mailing, MailingAttempt, Client
 from django.core.mail import send_mail
 from django.conf import settings
 
@@ -82,6 +83,16 @@ def send_mailing(mailing):
 
     mailing.start_mailing()
     logger.info(f'Рассылка {mailing.message} начата.')
+
+
+class ContextMixin:
+    def get_main_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["count_mailing"] = Mailing.objects.all().count()
+        context["count_mailing_enabled"] = Mailing.objects.filter(status__in=['created', 'started']).count()
+        context["unique_users"] = len(Client.objects.values_list("email").distinct())
+        context["blog_list"] = Blog.objects.order_by('?').all()[:3]
+        return context
 
 
 # Пример использования функций:
