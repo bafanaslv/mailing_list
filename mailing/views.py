@@ -79,6 +79,14 @@ class ClientListView(ListView):
         queryset = Client.objects.filter(owner=user)
         return queryset
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["count_mailing"] = Mailing.objects.all().count()
+        context["count_mailing_enabled"] = Mailing.objects.filter(status__in=['created', 'started']).count()
+        context["unique_users"] = len(Client.objects.values_list("email").distinct())
+        context["blog_list"] = Blog.objects.order_by('?').all()[:3]
+        return context
+
 
 class ClientCreateView(CreateView, LoginRequiredMixin):
     model = Client
