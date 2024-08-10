@@ -72,7 +72,7 @@ def send_mailing(mailing):
         # При ошибке почтового сервера получаем ответ - ошибка, которая записывается в error
         server_response = str(error)
         status = 'failed'
-        logger.error(f'Ошибка при отправке письма клиентам {clients_list} для рассылки {mailing.message}: {server_response}')
+        logger.error(f'Ошибка при отправке письма {clients_list} для рассылки {mailing.message}: {server_response}')
 
         # Записываем попытку рассылки
     MailingAttempt.objects.create(
@@ -86,6 +86,7 @@ def send_mailing(mailing):
 
 
 class ContextMixin:
+    """ Миксин для вывода статистики и блогов в гравной странице."""
     def get_main_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context["count_mailing"] = Mailing.objects.all().count()
@@ -95,6 +96,5 @@ class ContextMixin:
         return context
 
 
-# Пример использования функций:
 if __name__ == "__main__":
     send_mailings()

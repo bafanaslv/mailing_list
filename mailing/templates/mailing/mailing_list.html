@@ -2,8 +2,10 @@
 {% block content %}
 <div class="album py-5 bg-body-tertiary">
     <div class="container">
-      <p1 class="mb-1">Раздел: Рассылки</p1>
-      <a href="{% url 'mailing:create' %}" class="btn btn-primary my-2" >Добавить рассылку</a>
+      <p1 class="mb-1">Рассылки</p1>
+      {% if not perms.mailing.can_disabled_mailing %}
+        <a href="{% url 'mailing:create' %}" class="btn btn-primary my-2" >Добавить рассылку</a>
+      {% endif %}
       <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
       {% for mailing in object_list %}
           <div class="col">
@@ -14,7 +16,9 @@
                 <div class="d-flex justify-content-between align-items-center">
                     <a class="btn btn-outline-primary" href="{% url 'mailing:detail'  mailing.pk %}" role="button">Посмотреть</a>
                     <a class="btn btn-outline-primary" href="{% url 'mailing:update'  mailing.pk %}" role="button">Изменить</a>
-                    <a class="btn btn-outline-primary" href="{% url 'mailing:confirm_delete' mailing.pk %}" role="button">Удалить</a>
+                    {% if not perms.mailing.can_disabled_mailing %}
+                      <a class="btn btn-outline-primary" href="{% url 'mailing:confirm_delete' mailing.pk %}" role="button">Удалить</a>
+                    {% endif %}
                 </div>
               </div>
             </div>

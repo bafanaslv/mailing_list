@@ -13,7 +13,10 @@ class MailingListView(ContextMixin, ListView):
         user = self.request.user
         if not user.is_authenticated:
             user = None
-        queryset = Mailing.objects.filter(owner=user)
+        if user.has_perm('mailing.can_disabled_mailing'):
+            queryset = Mailing.objects.all()
+        else:
+            queryset = Mailing.objects.filter(owner=user)
         return queryset
 
     def get_context_data(self, *, object_list=None, **kwargs):
@@ -79,7 +82,10 @@ class ClientListView(ContextMixin, ListView):
         user = self.request.user
         if not user.is_authenticated:
             user = None
-        queryset = Client.objects.filter(owner=user)
+        if user.has_perm('users.can_blocked_user'):
+            queryset = Client.objects.all()
+        else:
+            queryset = Client.objects.filter(owner=user)
         return queryset
 
     def get_context_data(self, *, object_list=None, **kwargs):
@@ -114,7 +120,7 @@ class ClientDeleteView(DeleteView):
     success_url = reverse_lazy("mailing:client_list")
 
 
-class MessageListView(ContextMixin,ListView):
+class MessageListView(ContextMixin, ListView):
     model = Message
     template_name = "message_list.html"
 

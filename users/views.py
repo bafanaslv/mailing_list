@@ -1,5 +1,6 @@
 import random
 import string
+from msilib.schema import ListView
 from django.contrib.auth import logout
 from django.contrib.auth.hashers import make_password
 from django.contrib.auth.views import LoginView
@@ -7,6 +8,7 @@ from django.core.mail import send_mail
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse_lazy, reverse
 from django.views.generic import CreateView, UpdateView
+from mailing.utils import ContextMixin
 from users.forms import UserRegisterForm, PasswordResetForm, UserProfileForm
 from users.models import User
 import secrets
@@ -92,3 +94,16 @@ class ProfileView(UpdateView):
     model = User
     form_class = UserProfileForm
     success_url = reverse_lazy('users:profile')
+
+
+class UsersListView(ContextMixin, ListView):
+    model = User
+    template_name = "users_list.html"
+
+    def get_queryset(self):
+        queryset = User.objects.all()
+        return queryset
+
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super().get_main_data(**kwargs)
+        return context

@@ -163,12 +163,13 @@
         <div class="col-lg-6 col-md-8 mx-auto">
           <h1 class="fw-light">Сервис рассылок</h1>
           {% if user.is_authenticated %}
-            <a class="btn btn-primary btn-sm"  href="{% url 'mailing:client_list' %}">Клиенты</a>
-            {% if not perms.users.can_blocked_user %}
+            {% if perms.users.can_blocked_user %}
+              <a class="btn btn-primary btn-sm"  href="{% url 'mailing:list' %}">Рассылки</a>
+              <a class="btn btn-primary btn-sm"  href="{% url 'users:users_list' %}">Список пользователей</a>
+            {% else %}
+              <a class="btn btn-primary btn-sm"  href="{% url 'mailing:client_list' %}">Клиенты</a>
               <a class="btn btn-primary btn-sm"  href="{% url 'mailing:message_list' %}">Сообщения</a>
-            {% endif %}
-            <a class="btn btn-primary btn-sm"  href="{% url 'mailing:list' %}">Рассылки</a>
-            {% if not perms.mailing.can_disabled_mailing %}
+              <a class="btn btn-primary btn-sm"  href="{% url 'mailing:list' %}">Рассылки</a>
               <a class="btn btn-primary btn-sm"  href="{% url 'mailing:attempt_list' %}">Просмотр логов</a>
             {% endif %}
           {% endif %}
