@@ -36,3 +36,9 @@ class MailingForm(StyleFormMixin, ModelForm):
     class Meta:
         model = Mailing
         exclude = ("owner",)
+
+
+class MailingStatusForm(StyleFormMixin, ModelForm):
+    class Meta:
+        model = Mailing
+        fields = ("status",)

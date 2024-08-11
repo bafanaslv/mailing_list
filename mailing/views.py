@@ -1,5 +1,5 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
-from mailing.forms import ClientForm, MessageForm, MailingForm
+from mailing.forms import ClientForm, MessageForm, MailingForm, MailingStatusForm
 from mailing.models import Client, MailingAttempt, Mailing, Message
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView, TemplateView
 from django.urls import reverse_lazy
@@ -57,6 +57,12 @@ class MailingUpdateView(UpdateView):
         kwargs = super().get_form_kwargs()
         kwargs.update({'user': self.request.user})
         return kwargs
+
+
+class MailingUpdateStatusView(UpdateView):
+    model = Mailing
+    form_class = MailingStatusForm
+    success_url = reverse_lazy("mailing:list")
 
 
 class MailingDetailView(DetailView):

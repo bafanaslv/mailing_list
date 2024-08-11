@@ -1,7 +1,8 @@
 from django.contrib.auth.views import LoginView, LogoutView
 from django.urls import path
 from users.apps import UsersConfig
-from users.views import UserCreateView, email_verification, password_reset_request, ProfileView, UsersListView
+from users.views import (UserCreateView, email_verification, password_reset_request,
+                         ProfileView, UsersListView, UserUpdateView)
 
 app_name = UsersConfig.name
 
@@ -13,4 +14,5 @@ urlpatterns = [
     path('email-confirm/<str:token>', email_verification, name='email-confirm'),
     path('password-reset/', password_reset_request, name='password_reset'),
     path('users/', UsersListView.as_view(), name='users_list'),
+    path('<int:pk>/user_update/', UserUpdateView.as_view(), name='user_update'),
 ]

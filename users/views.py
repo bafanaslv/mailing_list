@@ -1,15 +1,14 @@
 import random
 import string
-from msilib.schema import ListView
 from django.contrib.auth import logout
 from django.contrib.auth.hashers import make_password
 from django.contrib.auth.views import LoginView
 from django.core.mail import send_mail
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse_lazy, reverse
-from django.views.generic import CreateView, UpdateView
+from django.views.generic import CreateView, UpdateView, ListView
 from mailing.utils import ContextMixin
-from users.forms import UserRegisterForm, PasswordResetForm, UserProfileForm
+from users.forms import UserRegisterForm, PasswordResetForm, UserProfileForm, UserUpdateForm
 from users.models import User
 import secrets
 from config.settings import EMAIL_HOST_USER
@@ -107,3 +106,10 @@ class UsersListView(ContextMixin, ListView):
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_main_data(**kwargs)
         return context
+
+
+class UserUpdateView(UpdateView):
+    model = User
+    form_class = UserUpdateForm
+    template_name = "users/user_form.html"
+    success_url = reverse_lazy("users:users_list")
