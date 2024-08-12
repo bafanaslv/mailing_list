@@ -88,12 +88,26 @@ def send_mailing(mailing):
 class ContextMixin:
     """ Миксин для вывода статистики и блогов на главной странице."""
     def get_main_data(self, **kwargs):
-        print(len(Client.objects.values_list("email").distinct()))
         context = super().get_context_data(**kwargs)
         context["count_mailing"] = Mailing.objects.all().count()
         context["count_mailing_enabled"] = Mailing.objects.filter(status__in=['created', 'started']).count()
         context["unique_users"] = len(Client.objects.values_list("email").distinct())
         context["blog_list"] = Blog.objects.order_by('?').all()[:3]
+        return context
+
+
+class EmailMixin:
+    """ Миксин для вывода списка адресатов в просмотр рассылки."""
+    def get_main_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        queryset = Mailing.objects.filter(pk=self.kwargs['pk'])
+        clients_id_list = list(queryset.values("client"))
+        email_list = []
+        for client_id in clients_id_list:
+            query = Client.objects.filter(id=client_id['client'])
+            client_email = list(query.values('email'))[0]['email']
+            email_list.append(client_email)
+        context["clients_email"] = (', '.join(email_list))
         return context
 
 

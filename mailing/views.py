@@ -1,14 +1,13 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.shortcuts import render
-
 from mailing.forms import ClientForm, MessageForm, MailingForm, MailingStatusForm
 from mailing.models import Client, MailingAttempt, Mailing, Message
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView, TemplateView
 from django.urls import reverse_lazy
-from mailing.utils import ContextMixin
+from mailing.utils import ContextMixin, EmailMixin
 
 
 class MailingListView(ContextMixin, ListView):
+    """ Миксин ContextMixin для вывода статистики и блогов на главной странице."""
     model = Mailing
 
     def get_queryset(self):
@@ -67,24 +66,19 @@ class MailingUpdateStatusView(UpdateView):
     success_url = reverse_lazy("mailing:list")
 
 
-class MailingDetailView(DetailView):
+class MailingDetailView(EmailMixin, DetailView):
+    """ Миксин EmailMixin готовит список адресатов рассылки."""
     model = Mailing
 
-    # def get_object(self, queryset=None):
-    #     self.object = super().get_object(queryset)
-    #     print(type(self.object))
-    #     self.object.save()
-    #     return self.object
-    #
-    def get_queryset(self, **kwargs):
-        # mailing = self.request.
-        queryset = Mailing.objects.filter(pk=self.kwargs['pk'])
-        clients_id_list = list(queryset.values('client'))
-        for client_id in clients_id_list:
-            query = Client.objects.filter(id=client_id['client'])
-            client_email = list(query.values('email'))
-            qr = client_email[0]['email']
-        return queryset
+    def get_object(self, queryset=None):
+        self.object = super().get_object(queryset)
+        print(type(self.object))
+        self.object.save()
+        return self.object
+
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super().get_main_data(**kwargs)
+        return context
 
 
 class MailingDeleteView(DeleteView):
@@ -94,6 +88,7 @@ class MailingDeleteView(DeleteView):
 
 
 class ClientListView(ContextMixin, ListView):
+    """ Миксин ContextMixin для вывода статистики и блогов на главной странице."""
     model = Client
     template_name = "client_list.html"
 
@@ -140,6 +135,7 @@ class ClientDeleteView(DeleteView):
 
 
 class MessageListView(ContextMixin, ListView):
+    """ Миксин ContextMixin для вывода статистики и блогов на главной странице."""
     model = Message
     template_name = "message_list.html"
 
@@ -183,6 +179,7 @@ class MessageDeleteView(DeleteView):
 
 
 class AttemptListView(ContextMixin, ListView):
+    """ Миксин ContextMixin для вывода статистики и блогов на главной странице."""
     model = MailingAttempt
     template_name = "attempt_list.html"
 
@@ -192,6 +189,7 @@ class AttemptListView(ContextMixin, ListView):
 
 
 class BaseListView(ContextMixin, TemplateView):
+    """ Миксин ContextMixin для вывода статистики и блогов на главной странице."""
     template_name = 'base.html'
 
     def get_context_data(self, *, object_list=None, **kwargs):

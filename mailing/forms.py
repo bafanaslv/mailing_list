@@ -1,6 +1,4 @@
 from django.forms import BooleanField, ModelForm
-
-from mailing import models
 from mailing.models import Client, Message, Mailing
 
 

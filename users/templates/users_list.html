@@ -10,7 +10,7 @@
                 <div class="card-footer text-center shadow-sm">
                   <div class="card-body">
                     <p class="card-text">Компания: {{ user_obj.company }}</p>
-                    <p class="card-text">E-MAIL: {{ user_obj.email }}</p>
+                    <p class="card-text">E-mail: {{ user_obj.email }}</p>
                     <p class="card-text">Состояние: {{ user_obj.is_active }}</p>
                     <div class="d-flex justify-content-between align-items-center">
                         <a class="btn btn-outline-primary" href="{% url 'users:user_update' user_obj.pk %}" role="button">Изменить</a>
