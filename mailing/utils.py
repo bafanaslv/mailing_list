@@ -86,8 +86,9 @@ def send_mailing(mailing):
 
 
 class ContextMixin:
-    """ Миксин для вывода статистики и блогов в гравной странице."""
+    """ Миксин для вывода статистики и блогов на главной странице."""
     def get_main_data(self, **kwargs):
+        print(len(Client.objects.values_list("email").distinct()))
         context = super().get_context_data(**kwargs)
         context["count_mailing"] = Mailing.objects.all().count()
         context["count_mailing_enabled"] = Mailing.objects.filter(status__in=['created', 'started']).count()

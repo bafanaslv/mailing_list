@@ -32,7 +32,7 @@ class UserCreateView(CreateView):
             subject='Подтверждение почты',
             message=f'Перейти по ссылке для подтверждения почты {url}',
             from_email=EMAIL_HOST_USER,
-            recipient_list=[EMAIL_HOST_USER]
+            recipient_list=[user.email]
         )
         return super().form_valid(form)
 
@@ -75,15 +75,15 @@ def password_reset_request(request):
                         'Восстановление пароля',
                         f'Ваш новый пароль: {new_password}',
                         EMAIL_HOST_USER,
-                        [EMAIL_HOST_USER],
+                        [user.email],
                         fail_silently=False,
                     )
-                    messages.success(request, f'Новый пароль отправлен на почтовый ящик {EMAIL_HOST_USER}')
+                    messages.success(request, f'Новый пароль отправлен на почтовый ящик {user.email}')
                 except Exception as e:
                     messages.error(request, 'Ошибка при отправке письма. Попробуйте еще раз.')
                 return redirect('users:login')
             except User.DoesNotExist:
-                messages.error(request, f'Пользователь с почтой {EMAIL_HOST_USER} не существует')
+                messages.error(request, f'Пользователь с почтой {user.email} не существует')
     else:
         form = PasswordResetForm()
     return render(request, 'users/password_reset.html', {'form': form})
@@ -100,7 +100,7 @@ class UsersListView(ContextMixin, ListView):
     template_name = "users_list.html"
 
     def get_queryset(self):
-        queryset = User.objects.all()
+        queryset = User.objects.order_by("email").all()
         return queryset
 
     def get_context_data(self, *, object_list=None, **kwargs):

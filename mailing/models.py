@@ -49,9 +49,9 @@ class Mailing(models.Model):
                    ("weekly", "еженедельно"),
                    ("monthly", "ежемесячно")]
 
-    owner = models.ForeignKey(User, verbose_name='Владелец', on_delete=models.CASCADE, related_name="mailings", **NULLABLE)
+    owner = models.ForeignKey(User, related_name='mailings', on_delete=models.CASCADE, verbose_name='Владелец', **NULLABLE)
     message = models.ForeignKey(Message, related_name='messages', on_delete=models.CASCADE, verbose_name='сообщение')
-    client = models.ManyToManyField(Client, verbose_name='адресат')
+    client = models.ManyToManyField(Client, related_name='client', verbose_name='клиент')
     begin_time = models.DateTimeField(verbose_name='дата и время первой отправки рассылки')
     end_time = models.DateTimeField(verbose_name='дата и время окончания отправки рассылок')
     periodicity = models.CharField(max_length=10, choices=PERIODICITY, default='ежедневно', verbose_name='периодичность')

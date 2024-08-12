@@ -1,4 +1,6 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.shortcuts import render
+
 from mailing.forms import ClientForm, MessageForm, MailingForm, MailingStatusForm
 from mailing.models import Client, MailingAttempt, Mailing, Message
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView, TemplateView
@@ -14,7 +16,7 @@ class MailingListView(ContextMixin, ListView):
         if not user.is_authenticated:
             user = None
         if user.has_perm('mailing.can_disabled_mailing'):
-            queryset = Mailing.objects.all()
+            queryset = Mailing.objects.order_by("id").all()
         else:
             queryset = Mailing.objects.filter(owner=user)
         return queryset
@@ -68,10 +70,21 @@ class MailingUpdateStatusView(UpdateView):
 class MailingDetailView(DetailView):
     model = Mailing
 
-    def get_object(self, queryset=None):
-        self.object = super().get_object(queryset)
-        self.object.save()
-        return self.object
+    # def get_object(self, queryset=None):
+    #     self.object = super().get_object(queryset)
+    #     print(type(self.object))
+    #     self.object.save()
+    #     return self.object
+    #
+    def get_queryset(self, **kwargs):
+        # mailing = self.request.
+        queryset = Mailing.objects.filter(pk=self.kwargs['pk'])
+        clients_id_list = list(queryset.values('client'))
+        for client_id in clients_id_list:
+            query = Client.objects.filter(id=client_id['client'])
+            client_email = list(query.values('email'))
+            qr = client_email[0]['email']
+        return queryset
 
 
 class MailingDeleteView(DeleteView):

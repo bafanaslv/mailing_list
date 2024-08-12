@@ -4,7 +4,7 @@
     <div class="row">
         <div class="col-6">
             <form class="row" method="post" enctype="multipart/form-data">
-                {% if perms.mailing.can_disabled_mailing %}
+                {% if object and perms.mailing.can_disabled_mailing %}
                     <p class="card-text">Отправитель : {{ mailing.owner.email }}</p>
                     <p class="card-text">Тема : {{ mailing.message.title }} </p>
                 {% endif %}

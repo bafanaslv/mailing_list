@@ -17,7 +17,7 @@ class Command(BaseCommand):
         mailings = Mailing.objects.filter(status__in=['created', 'started'])
         for mailing in mailings:
             self.send_mailing(mailing)
-            if mailing.status == 'completed':
+            if mailing.status in ['completed', 'disabled']:
                 continue
             if mailing.status == 'created':
                 if self.should_send_mailing(mailing, msk_time):

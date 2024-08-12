@@ -163,7 +163,8 @@
         <div class="col-lg-6 col-md-8 mx-auto">
           <h1 class="fw-light">Сервис рассылок</h1>
           {% if user.is_authenticated %}
-            {% if perms.users.can_blocked_user%}
+          <p class="mb-1">Пользователь: {{ user.email }}</p>
+            {% if perms.users.can_blocked_user and user.is_superuser %}
               <a class="btn btn-primary btn-sm"  href="{% url 'mailing:list' %}">Рассылки</a>
               <a class="btn btn-primary btn-sm"  href="{% url 'users:users_list' %}">Список пользователей</a>
             {% else %}
@@ -176,7 +177,7 @@
         </div>
       </div>
     </section>
-    {% if unique_users > 0 or count_mailing > 0 or count_mailing_enabled > 0 %}
+    {% if unique_users > 0 or count_mailing > 0 or count_mailing_enabled > 0 or blog_list %}
       <div class="container">
         <div class="col-12">
           <ul class="list-group list-group-horizontal">
