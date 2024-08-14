@@ -15,7 +15,7 @@
                 <p class="card-text">Статус : {{ mailing.status }} </p>
                 <p class="card-text">Тема : {{ mailing.message.title }} </p>
                 <div class="d-flex justify-content-between align-items-center">
-                    <a class="btn btn-outline-primary" href="{% url 'mailing:detail'  mailing.pk %}" role="button">Посмотреть</a>
+                    <a class="btn btn-outline-primary" href="{% url 'mailing:detail' mailing.pk %}" role="button">Посмотреть</a>
                     {% if perms.mailing.can_disabled_mailing %}
                         <a class="btn btn-outline-primary" href="{% url 'mailing:update_status'  mailing.pk %}" role="button">Изменить</a>
                     {% else %}

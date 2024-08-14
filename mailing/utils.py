@@ -91,7 +91,7 @@ class ContextMixin:
         context = super().get_context_data(**kwargs)
         context["count_mailing"] = Mailing.objects.all().count()
         context["count_mailing_enabled"] = Mailing.objects.filter(status__in=['created', 'started']).count()
-        context["unique_users"] = len(Client.objects.values_list("email").distinct())
+        context["unique_clients"] = len(Client.objects.values_list("email").distinct())
         context["blog_list"] = Blog.objects.order_by('?').all()[:3]
         return context
 

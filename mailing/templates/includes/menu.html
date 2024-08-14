@@ -13,7 +13,8 @@
             <form id="logout-form" method="post" action="{% url 'users:logout' %}" style="display: none;">
                 {% csrf_token %}
             </form>
-            <li><a href="{% url 'users:logout' %}" class="text-white">Выход {{ user.email }}</a></li>
+            <li><a href="{% url 'users:user_profile' user.pk %}" class="text-white">Профиль пользователя</a></li>
+            <li><a href="{% url 'users:logout' %}" class="text-white">Выход</a></li>
           {% else %}
             <li><a href="{% url 'users:login' %}" class="text-white">Войти</a></li>
             <li><a href="{% url 'users:register' %}" class="text-white">Регистрация</a></li>

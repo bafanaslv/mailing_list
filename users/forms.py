@@ -17,7 +17,13 @@ class PasswordResetForm(forms.Form):
 class UserProfileForm(StyleFormMixin, UserCreationForm):
     class Meta:
         model = User
-        fields = ('company', 'phone', 'email', 'first_name', 'last_name', 'phone', 'avatar')
+        fields = ('company', 'email', 'first_name', 'last_name', 'phone', 'avatar')
+
+
+class UserProfileUpdateForm(StyleFormMixin, ModelForm):
+    class Meta:
+        model = User
+        fields = ('company', 'email', 'first_name', 'last_name', 'phone', 'avatar')
 
 
 class UserUpdateForm(StyleFormMixin, ModelForm):

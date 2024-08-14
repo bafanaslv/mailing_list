@@ -6,9 +6,9 @@ from django.contrib.auth.views import LoginView
 from django.core.mail import send_mail
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse_lazy, reverse
-from django.views.generic import CreateView, UpdateView, ListView
+from django.views.generic import CreateView, UpdateView, ListView, DetailView, DeleteView
 from mailing.utils import ContextMixin
-from users.forms import UserRegisterForm, PasswordResetForm, UserProfileForm, UserUpdateForm
+from users.forms import UserRegisterForm, PasswordResetForm, UserProfileForm, UserUpdateForm, UserProfileUpdateForm
 from users.models import User
 import secrets
 from config.settings import EMAIL_HOST_USER
@@ -113,3 +113,26 @@ class UserUpdateView(UpdateView):
     form_class = UserUpdateForm
     template_name = "users/user_form.html"
     success_url = reverse_lazy("users:users_list")
+
+
+class UserProfileUpdateView(UpdateView):
+    model = User
+    form_class = UserProfileUpdateForm
+    template_name = "users/user_update.html"
+
+    def get_success_url(self):
+        user_id = self.kwargs['pk']
+        return reverse_lazy('users:user_profile', kwargs={'pk': user_id})
+
+
+class UserDetailView(DetailView):
+    model = User
+    template_name = 'user_profile.html'
+    success_url = reverse_lazy("mailing:list")
+
+
+class UserDeleteView(DeleteView):
+    model = User
+    template_name = 'users/confirm_delete.html'
+    success_url = reverse_lazy("users:users_list")
+

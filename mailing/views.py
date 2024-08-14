@@ -4,6 +4,7 @@ from mailing.models import Client, MailingAttempt, Mailing, Message
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView, TemplateView
 from django.urls import reverse_lazy
 from mailing.utils import ContextMixin, EmailMixin
+from users.models import User
 
 
 class MailingListView(ContextMixin, ListView):
