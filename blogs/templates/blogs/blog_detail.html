@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container">
+    <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
+      <div class="col">
+        <div class="card shadow-sm">
+          <div class="card-body">
+            <p class="card-text">Заголовок: {{ object.title }}</p>
+            <p class="card-text">Содержимое: {{ object.body }}</p>
+            <p class="card-text">Создан: {{ object.data_publish }}</p>
+            <p class="card-text">Количество просмотров: {{ object.view_counter }}</p>
+            <p class="card-text">Изображение: {{ object.image }}</p>
+            <div class="justify-content-between align-items-center">
+              <a class="btn btn-primary" onclick="history.back()" role="button">Назад</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+</div>
+{% endblock %}

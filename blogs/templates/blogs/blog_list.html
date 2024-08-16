@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="album py-5 bg-body-tertiary">
+  <div class="container">
+      <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
+      {% for blog in object_list %}
+        <div class="col">
+          <div class="card-footer text-center shadow-sm">
+            <div class="card-body">
+              <p class="card-text">Тема: {{ blog.title }}</p>
+              <a class="btn btn-outline-primary" href="{% url 'blogs:blog_detail' blog.pk %}" role="button">Просмотреть</a>
+            </div>
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+</div>
+{% endblock %}

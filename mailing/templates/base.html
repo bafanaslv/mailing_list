@@ -188,13 +188,19 @@
         </div>
       </div>
       <div class="container">
+        <div class="col-12">
+          <ul class="list-group list-group-horizontal">
+            <li class="list-group-item">Список случайных блогов</li>
+            <a class="btn btn-outline-primary" href="{% url 'blogs:blog_list' %}" role="button">Вывести все блоги </a>
+          </ul>
+        </div>
       <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
       {% for blog in blog_list %}
         <div class="col">
           <div class="card-footer text-center shadow-sm">
             <div class="card-body">
               <p class="card-text">Тема: {{ blog.title }}</p>
-              <p class="card-text">Сообщение: {{ blog.body }}</p>
+              <a class="btn btn-outline-primary" href="{% url 'blogs:blog_detail' blog.pk %}" role="button">Просмотреть</a>
             </div>
           </div>
         </div>
